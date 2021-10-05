@@ -1,0 +1,33 @@
+{
+  "name": "tienda-tamales",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --mode development --open",
+    "build": "webpack --mode production"
+  },
+  "keywords": [],
+  "author": "Manuel Ballinas Kramsky",
+  "license": "ISC",
+  "dependencies": {
+    "html-webpack-plugin": "^5.3.1",
+    "immutability-helper": "^3.1.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/preset-react": "^7.12.10",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-jsx-control-statements": "^4.1.0",
+    "file-loader": "^6.2.0",
+    "jsx-control-statements": "^3.2.8",
+    "path": "^0.12.7",
+    "react-hot-loader": "^4.13.0",
+    "webpack": "^5.13.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.1"
+  }
+}
