@@ -1,55 +1,47 @@
-const path = require('path');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-    mode: 'development',
     entry: './app/index.js',
     output: {
-        path: path.resolve(__dirname, 'public'),
+        path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js',
-        publicPath: "/public"
     },
     module: {
         rules: [
-            {
-                //Babel Loader
+            { //Regla para trabajar con arvchivos JavaScript
                 test: /\.js$/,
                 exclude: /node_modules/,
                 use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ["@babel/preset-react"],
-                        plugins: [
-                            "react-hot-loader/babel",
-                            "jsx-control-statements"
-                        ]
-                    }
+                    loader: 'babel-loader'
                 }
             },
-            {
-                test: /\.(png|gif|jpg|svg|jpeg)$/,
+            { //Regla para trabajar con imágenes
+                test: /\.(png|gif|jpg|svg|webp)$/,
                 use: [
                     {
                         loader: 'file-loader',
                         options: {
-                            name: 'assets/[hash].[ext]'
+                            name: 'assets/[name].[ext]'
                         }
                     }
-
                 ]
             },
-            {
-                test: /\.html$/,
-                use: [
-                    {
-                        loader: "html-loader",
-                    }
-                ]
-            },
-        ]
+            { //Regla para trabajar con CSS
+                test: /\.css$/,
+                use: ["style-loader", "css-loader"],
+            }
+        ],
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: "./index.html",
+            filename: "index.html"
+        })
+    ],
     devServer: {
         historyApiFallback : true,
         compress: true,
-        port: 8000,
+        port: 9000,
     }
-}
+};
