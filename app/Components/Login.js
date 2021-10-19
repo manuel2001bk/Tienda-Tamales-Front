@@ -31,7 +31,7 @@ class Login extends React.Component {
                 <div className="center">
                     <div className="container">
                         <div className="card overflow-hidden my-5 pt-sm-5">
-                            <div className="bg-login-overlay"></div>
+                            <div className="bg-login-overlay"/>
                             <div className="row justify-content-around">
                                 <div className="col-5">
                                     <div className="card overflow-hidden container">
