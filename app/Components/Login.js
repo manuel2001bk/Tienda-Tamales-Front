@@ -1,11 +1,14 @@
 import React from "react";
 import update from "immutability-helper";
 import css from "../assets/css/Login.css";
+import APIInvoker from "../utils/APIInvoker";
 
 class Login extends React.Component {
     constructor() {
         super();
         this.state = {
+            username:'',
+            password:''
         }
     }
     changeField(e) {
@@ -17,12 +20,39 @@ class Login extends React.Component {
     }
     usernameValidate(e){
         let username = this.state.username
+        if (this.state.username.length === 0) {
+            this.label.innerHTML = '* Campo obligatorio'
+        }
+        APIInvoker.invokeGET(`/users/usernameValidate/${username}`,
+            data => {
+                this.label.innerHTML = ""
+            },
+            error => {
+                this.label.innerHTML = "El usuario no existe."
+            })
     }
     iniciarSesion(e){
         //Signup
-        let user = {
-            userName: this.state.username,
-            password: this.state.password
+        if (this.state.username.length === 0) {
+            this.label.innerHTML = '* Campo obligatorio'
+        }else{
+            if (this.state.password.length === 0){
+                this.pass.innerHTML = '* Campo obligatorio'
+            }else{
+                let user = {
+                    userName: this.state.username,
+                    password: this.state.password
+                }
+                APIInvoker.invokePOST('/users/login',user, data => {
+                    //alert(data.message)
+                    window.localStorage.setItem('token', data.token)
+                    this.props.history.push('/Home')
+                }, error => {
+                    //alert(error.message)
+                    this.pass.innerHTML = error.message
+                })
+                e.preventDefault();
+            }
         }
     }
     render() {
@@ -38,7 +68,7 @@ class Login extends React.Component {
                                         <div className="bg-login text-center">
                                             <div className="position-relative">
                                                 <h4 className="text-white ">Bienvenido!</h4>
-                                                <p className="text-white-50 mb-0">Ingrese los datos requeridos.</p>
+                                                <p className="text-white mb-0">Ingrese los datos requeridos.</p>
 
                                             </div>
                                         </div>
@@ -58,7 +88,7 @@ class Login extends React.Component {
                                                         <label htmlFor="username">Nombre de usuario</label>
                                                         <div id="usernameMessage"
                                                              ref={self => this.label = self}
-                                                             className="form-text text-black">
+                                                             className="form-text text-danger">
                                                         </div>
                                                     </div>
                                                     <div className="form-floating">
@@ -72,6 +102,7 @@ class Login extends React.Component {
                                                                onChange={this.changeField.bind(this)}/>
                                                         <label htmlFor="password" className="form-label">Contraseña</label>
                                                         <div id="passwordHelp"
+                                                             ref={self => this.pass = self}
                                                              className="form-text text-danger">
                                                         </div>
                                                     </div>
