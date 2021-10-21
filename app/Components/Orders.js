@@ -1,17 +1,18 @@
 import React from 'react'
 import Header from "./Header";
+
 class Orders extends React.Component{
 
     constructor() {
         super()
         this.state = {
-            idOrder: '',
-            idClient:'',
-            idTamal:'',
-            quantity:'',
-            dateOfDelivery: '',
-            orderState: '',
-            typePayment: '',
+            idPedido: '',
+            idCliente: '',
+            idTamal: '',
+            cantidad: '',
+            fechaEntrega:'',
+            estado: '',
+            metodoPago: '',
             ordersList: [],
             quantityList: [],
             deliveryList: [],
@@ -28,8 +29,8 @@ class Orders extends React.Component{
         this.typePaymentList = []
 
 
-            //Extraer el catálogo de roles del backend
-        APIInvoker.invokeGET('/', data => {  //Entrará acá cuando status = true
+            //Extraer todos los pedidos
+        APIInvoker.invokeGET('/pedidos/getAllPedidos', data => {  //Entrará acá cuando status = true
             this.setState({
                 ordersList : data.data
             })
@@ -37,6 +38,7 @@ class Orders extends React.Component{
         }, error => { //Entrará acá cuando status = false
         })
 
+        /*
         //Extraer el catálogo de roles del backend
         APIInvoker.invokeGET('/',data => {  //Entrará acá cuando status = true
             this.setState({
@@ -54,7 +56,7 @@ class Orders extends React.Component{
         }, error => { //Entrará acá cuando status = false
         })
 
-
+        */
 
     }
 
@@ -78,9 +80,9 @@ class Orders extends React.Component{
     deleteProduct(e){
 
         //Extraer el catálogo de roles del backend
-        let idProducto = this.state.idProducto
-        if (idProducto) {
-            APIInvoker.invokePOST(`/products/deleteProduct/${idProducto}`, data => {  //Entrará acá cuando status = true
+        let idPedido = this.state.idPedido
+        if (idPedido) {
+            APIInvoker.invokePOST(`/pedidos/deletePedido/${idPedido}`, data => {  //Entrará acá cuando status = true
                 alert(data.message)
             }, error => {
                 alert(error.message )
@@ -96,78 +98,52 @@ class Orders extends React.Component{
             <div>
 
 
-                <h2 id="HeaderAdmin"><Header/></h2>
-
-
                 <div>
 
-                    <label htmlFor='idProducto'> Producto a eliminar</label>
-                    <select name="idProducto" id="idProducto" value={this.state.idOrder}
+                    <label htmlFor='idPedido'> Producto a eliminar</label>
+                    <select name="idPedido" id="idPedido" value={this.state.idPedido}
                             onChange={this.changeField.bind(this)}>
                         <For each="item" index="idx" of={this.state.ordersList}>
-                            <option key={idx} value={item.idProducto}>{item.nameProduct}</option>
+                            <option key={idx} value={item.idPedido}>{item.idTamal}</option>
                         </For>
-
                     </select>
 
 
                 </div>
 
 
-                <table className="table" name="idProducto" id="idProducto" value={this.state.idOrder}
+                <table className="table" name="idPedido" id="idPedido" value={this.state.idPedido}
                        onChange={this.changeField.bind(this)}>
                     <thead>
                     <tr>
                         <th scope="col">ID</th>
+                        <th scope="col">Tamal</th>
                         <th scope="col">Stock</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Precio</th>
+                        <th scope="col">Estado</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td className="table-info">
                             <For each="item" index="idx" of={this.state.ordersList}>
-                                <li type="circle" key={idx} value={item.idOrder}>
-                                    {item.idProducto}
+                                <li type="circle" key={idx} value={item.idPedido}>
+                                    {item.idPedido}
                                 </li>
                             </For>
                         </td>
 
-                        <td className="table-primary">
-                            <For each="item" index="idx" of={this.state.ordersList}>
-                                <li type="circle" key={idx} value={item.idOrder}>
-                                    {item.quantity}
-                                </li>
-                            </For>
-                        </td>
 
-                        <td className="table-info">
-                           <For each="item" index="idx" of={this.state.ordersList}>
-                                <li type="circle" key={idx} value={item.idOrder}>
-                                    {item.nameProduct}
-                                </li>
-                            </For>
-                        </td>
-
-                        <td className="table-primary">
-                            <For each="item" index="idx" of={this.state.ordersList}>
-                                <li type="circle" key={idx} value={item.idOrder}>
-                                    {item.price}
-                                </li>
-                            </For>
-                        </td>
 
                     </tr>
                     </tbody>
                 </table>
 
-                <button type="button" className="btn btn-warning" id="textcolor"
-                        onClick={this.deleteProduct.bind(this)}> ELIMINAR
-                </button>
+
+
 
             </div>
 
         )
     }
 }
+export default Orders;

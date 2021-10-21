@@ -9,6 +9,7 @@ import Hola from "./Hola";
 import Login from "./Login";
 import Register from "./Register";
 import Home from "./Home";
+import Orders from  "./Orders";
 
 class App extends React.Component{
     render() {
@@ -20,6 +21,7 @@ class App extends React.Component{
                         <Route exact path='/Login' component={Login}/>
                         <Route exact path='/Register' component={Register}/>
                         <Route exact path='/Home' component={Home}/>
+                        <Route exact path='/Orders' component={Orders}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </BrowserRouter>
