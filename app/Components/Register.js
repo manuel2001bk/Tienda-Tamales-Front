@@ -11,6 +11,7 @@ class Register extends React.Component{
             apellidoPaterno: '',
             userName:'',
             password:'',
+            fechaNacimiento : ''
         }
         this.status = false
         this.usernameOk = false
@@ -27,21 +28,28 @@ class Register extends React.Component{
     }
 
     usernameValidate(e){
-
         let userName = this.state.userName
         if (userName) {
-
+            APIInvoker.invokeGET(`/users/usernameValidate/${userName}`,data => {
+                this.username.innerHTML = '* El nombre de usuario no está disponible'
+                this.usernameOk = false
+            }, error => {
+                this.username.innerHTML = ''
+                this.usernameOk =  true
+            })
         } else
             this.usernameOk = false
     }
 
     validarCampos(){
         let estado = true;
+
         if (this.state.nombre.length === 0) {
             this.nombre.innerHTML = '* Campo obligatorio'
             estado = false;
-        } else
+        } else{
             this.nombre.innerHTML = ''
+        }
 
         if (this.state.apellidoPaterno.length === 0) {
             this.apellidoPaterno.innerHTML = '* Campo obligatorio'
@@ -60,6 +68,13 @@ class Register extends React.Component{
         } else
             this.password.innerHTML = ''
 
+        if (this.state.fechaNacimiento.length === 0) {
+            this.fechaNacimiento.innerHTML = '* Campo obligatorio'
+            estado = false;
+        }else
+            this.fechaNacimiento.innerHTML = ''
+
+
         if (estado === false)
             this.status = false
         else
@@ -71,15 +86,20 @@ class Register extends React.Component{
         this.validarCampos()
 
         if (this.status && this.usernameOk) {
-            //register
             let user = {
-                idRol: 2,
                 nombre: this.state.nombre,
                 apellidoPaterno: this.state.apellidoPaterno,
                 userName: this.state.userName,
-                password: this.state.password
+                password: this.state.password,
+                fechaNacimiento : this.state.fechaNacimiento
             }
-
+            APIInvoker.invokePOST('/users/signup', user, data => {
+                alert(data.message)
+                this.usernameOk = false
+                this.props.history.push('/')
+            }, error => {
+                alert(error.message + error.error)
+            })
         }
         else {
             this.messageError.innerHTML = 'Los campos marcados con * son obligatorios'
@@ -156,6 +176,17 @@ class Register extends React.Component{
                                                     </div>
                                                     <label ref={self=> this.password = self} className="form-text text-danger"></label>
                                                     <br/>
+                                                    <div className="form-floating">
+                                                        <input className="form-control"
+                                                               type="date"
+                                                               name="fechaNacimiento"
+                                                               id="fechaNacimiento"
+                                                               value={this.state.fechaNacimiento}
+                                                               onChange={this.changeField.bind(this)}/>
+                                                        <label htmlFor="fechaNacimiento">Fecha de nacimiento</label>
+                                                    </div>
+                                                    <label ref={self=> this.fechaNacimiento = self} className="form-text text-danger"></label>
+                                                    <br/>
                                                     <div className="d-grid gap-2">
                                                         <button className="btn btn-outline-success"
                                                                 type="button"
@@ -170,8 +201,7 @@ class Register extends React.Component{
                                 </div>
                             </div>
                         </div>
-                        <p className="row justify-content-center">© 2021 Tukisoft</p>
-                    </div>
+                   </div>
                 </div>
             </div>
         )

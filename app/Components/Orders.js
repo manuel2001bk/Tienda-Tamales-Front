@@ -1,5 +1,6 @@
 import React from 'react'
-import Header from "./Header";
+import APIInvoker from "../utils/APIInvoker";
+import update from "immutability-helper";
 
 class Orders extends React.Component{
 
@@ -13,7 +14,7 @@ class Orders extends React.Component{
             fechaEntrega:'',
             estado: '',
             metodoPago: '',
-            ordersList: [],
+            orderList: [],
             quantityList: [],
             deliveryList: [],
             orderStateList: [],
@@ -22,63 +23,39 @@ class Orders extends React.Component{
             
         }
         this.status = false
-        this.ordersList = []
+        this.orderList = []
         this.quantityList = []
         this.deliveryList = []
         this.orderStateList = []
         this.typePaymentList = []
 
-
             //Extraer todos los pedidos
         APIInvoker.invokeGET('/pedidos/getAllPedidos', data => {  //Entrará acá cuando status = true
             this.setState({
-                ordersList : data.data
+                orderList : data.data,
+
             })
-            console.log(this.state.ordersList)
-        }, error => { //Entrará acá cuando status = false
+            console.log("Lista de pedidos"+this.state.orderList)
+        }, error => {
+            //Entrará acá cuando status = false
+            alert(error.message)
         })
-
-        /*
-        //Extraer el catálogo de roles del backend
-        APIInvoker.invokeGET('/',data => {  //Entrará acá cuando status = true
-            this.setState({
-                quantityList : data.data
-            })
-        }, error => { //Entrará acá cuando status = false
-        })
-
-        //Extraer el catálogo de roles del backend
-        APIInvoker.invokeGET('/', data => {  //Entrará acá cuando status = true
-            this.setState({
-                deliveryList : data.data
-            })
-            console.log(this.state.deliveryList)
-        }, error => { //Entrará acá cuando status = false
-        })
-
-        */
-
     }
 
     changeField(e) {
-
         let field = e.target.name
         let value = e.target.value
 
         this.setState(update(this.state, {
-            [field]: {$set: value}
+            [field] : {$set : value}
         }))
     }
 
-
-
     updateData(e){
-
 
     }
 
     deleteProduct(e){
-
         //Extraer el catálogo de roles del backend
         let idPedido = this.state.idPedido
         if (idPedido) {
@@ -88,59 +65,64 @@ class Orders extends React.Component{
                 alert(error.message )
             })
         }
-
     }
-
 
     render() {
         return(
-
             <div>
-
-
-                <div>
-
-                    <label htmlFor='idPedido'> Producto a eliminar</label>
-                    <select name="idPedido" id="idPedido" value={this.state.idPedido}
-                            onChange={this.changeField.bind(this)}>
-                        <For each="item" index="idx" of={this.state.ordersList}>
-                            <option key={idx} value={item.idPedido}>{item.idTamal}</option>
-                        </For>
-                    </select>
-
+                <div className="center">
+                    <div className="container">
+                        <div className="card overflow-hidden my-5 ">
+                            <div className="row justify-content-around">
+                                <div className="card overflow-hidden container">
+                                    <div className="card-body pt-5">
+                                        <div className="p-2">
+                                            <div >
+                                                <div>
+                                                    <label htmlFor='idPedido'> Producto a eliminar</label>
+                                                    <select className="form-select"
+                                                            id="idPedido"
+                                                            name="idPedido"
+                                                            value={this.state.idPedido}
+                                                            aria-label="Floating label select example"
+                                                            onChange={this.changeField.bind(this)}>
+                                                        <option value='0'>Elige Producto</option>
+                                                        <For each="item" index="idx" of={ this.state.orderList}>
+                                                            <option key={idx} value={item.idPedido}>{item.idTamal}</option>
+                                                        </For>
+                                                    </select>
+                                                </div>
+                                                <table className="table" name="idPedido" id="idPedido" value={this.state.idPedido}
+                                                       onChange={this.changeField.bind(this)}>
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">ID</th>
+                                                        <th scope="col">Tamal</th>
+                                                        <th scope="col">Stock</th>
+                                                        <th scope="col">Estado</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td className="table-info">
+                                                            <For each="item" index="idx" of={this.state.orderList}>
+                                                                <li type="circle" key={idx} value={item.idPedido}>
+                                                                    {item.idPedido}
+                                                                </li>
+                                                            </For>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
-
-
-                <table className="table" name="idPedido" id="idPedido" value={this.state.idPedido}
-                       onChange={this.changeField.bind(this)}>
-                    <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Tamal</th>
-                        <th scope="col">Stock</th>
-                        <th scope="col">Estado</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td className="table-info">
-                            <For each="item" index="idx" of={this.state.ordersList}>
-                                <li type="circle" key={idx} value={item.idPedido}>
-                                    {item.idPedido}
-                                </li>
-                            </For>
-                        </td>
-
-
-
-                    </tr>
-                    </tbody>
-                </table>
-
-
-
-
             </div>
 
         )

@@ -37,7 +37,7 @@ class Login extends React.Component {
                     <div className="card">
                         <div className="card-body">
                             <div className="center-with-page">
-                                <h4> Registrar </h4>
+                                <h1>Bienvenido a la Tienda de tamales.</h1>
 
                             </div>
                         </div>

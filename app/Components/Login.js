@@ -132,7 +132,6 @@ class Login extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <p className="row justify-content-center">© 2021 Tukisoft</p>
                     </div>
                 </div>
             </div>
