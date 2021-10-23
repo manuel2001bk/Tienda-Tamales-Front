@@ -1,7 +1,7 @@
 import React from "react";
 import update from "immutability-helper";
 import css from "../assets/css/Login.css";
-import APIInvoker from "../utils/APIInvoker";
+import APIInvoker from "../Utils/APIInvoker";
 
 class Login extends React.Component {
     constructor() {
@@ -60,7 +60,7 @@ class Login extends React.Component {
             <div>
                 <div className="center">
                     <div className="container">
-                        <div className="card overflow-hidden my-5 pt-sm-5">
+                        <div className="card overflow-hidden my-5 pt-sm-4">
                             <div className="bg-login-overlay"/>
                             <div className="row justify-content-around">
                                 <div className="col-5">
@@ -132,6 +132,7 @@ class Login extends React.Component {
                                 </div>
                             </div>
                         </div>
+                        <p className="row justify-content-center">© 2021 Tukisoft</p>
                     </div>
                 </div>
             </div>

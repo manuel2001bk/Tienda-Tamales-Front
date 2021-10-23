@@ -1,6 +1,6 @@
 import React from 'react'
 import update from "immutability-helper";
-import APIInvoker from "../utils/APIInvoker";
+import APIInvoker from "../Utils/APIInvoker";
 import css from "../assets/css/Register.css";
 
 class Register extends React.Component{

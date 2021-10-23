@@ -39,6 +39,7 @@ class Login extends React.Component {
                             <div className="center-with-page">
                                 <h1>Bienvenido a la Tienda de tamales.</h1>
 
+
                             </div>
                         </div>
                     </div>

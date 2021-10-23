@@ -1,5 +1,5 @@
 import React from 'react'
-import APIInvoker from "../utils/APIInvoker";
+import APIInvoker from "../../Utils/APIInvoker";
 import update from "immutability-helper";
 
 class Orders extends React.Component{
@@ -30,14 +30,12 @@ class Orders extends React.Component{
         this.typePaymentList = []
 
             //Extraer todos los pedidos
-        APIInvoker.invokeGET('/pedidos/getAllPedidos', data => {  //Entrará acá cuando status = true
+        APIInvoker.invokeGET('/pedidos/getAllPedidos', data => {
             this.setState({
-                orderList : data.data,
-
+                orderList : data.data
             })
             console.log("Lista de pedidos"+this.state.orderList)
         }, error => {
-            //Entrará acá cuando status = false
             alert(error.message)
         })
     }

@@ -6,7 +6,7 @@ class APIInvoker {
     getAPIHeader(){
         return({
             'Content-Type': 'application/json',
-            //authorization: window.localStorage.getItem('token')
+            authorization: window.localStorage.getItem('token')
         })
     }
 
