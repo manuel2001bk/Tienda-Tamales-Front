@@ -181,6 +181,7 @@ class Register extends React.Component{
                                                                type="date"
                                                                name="fechaNacimiento"
                                                                id="fechaNacimiento"
+                                                               placeholder="13/03/2000"
                                                                value={this.state.fechaNacimiento}
                                                                onChange={this.changeField.bind(this)}/>
                                                         <label htmlFor="fechaNacimiento">Fecha de nacimiento</label>
