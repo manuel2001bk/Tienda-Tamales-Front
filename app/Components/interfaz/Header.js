@@ -14,39 +14,22 @@ class Header extends React.Component {
                         </button>
                         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <ul className="navbar-nav ">
-                                <li className="nav-item dropdown">
-                                    <a className="nav-link dropdown-toggle active" role="button"
-                                       data-bs-toggle="dropdown" >Productos
-                                    </a>
-                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><a className="dropdown-item" href="/Productos">Lista de Productos</a></li>
-                                        <li><a className="dropdown-item" href="/AddProducto">Agregar Nuevo Producto</a></li>
-                                        <li><a className="dropdown-item" href="/DeleteProducto">Eliminar Producto</a></li>
-                                        <li><a className="dropdown-item" href="/UpdateProducto">Modificar Producto</a></li>
-                                    </ul>
-                                </li>
+                                <a className="nav-link active" role="button"
+                                   data-bs-toggle="dropdown" href="/cliente">Clientes
+                                </a>
                             </ul>
                             <ul className="navbar-nav ">
                                 <li className="nav-item dropdown">
-                                    <a className="nav-link dropdown-toggle active" role="button"
-                                       data-bs-toggle="dropdown" >Proveedores
+                                    <a className="nav-link active" role="button"
+                                       data-bs-toggle="dropdown" href="/tamales">Tamales
                                     </a>
-                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><a className="dropdown-item" href="/Proveedores">Lista de Proveedores</a></li>
-                                        <li><a className="dropdown-item" href="/AddProveedor">Agregar Nuevo Proveedor</a></li>
-                                        <li><a className="dropdown-item" href="/DeleteProveedor">Eliminar Proveedor</a></li>
-                                        <li><a className="dropdown-item" href="/UpdateProveedor">Modificar Proveedor</a></li>
-                                    </ul>
                                 </li>
                             </ul>
                             <ul className="navbar-nav">
                                 <li className="nav-item dropdown">
-                                    <a className="nav-link dropdown-toggle active" role="button"
-                                       data-bs-toggle="dropdown" >Ventas
+                                    <a className="nav-link active" role="button"
+                                       data-bs-toggle="dropdown" href="/tamales">Pedidos
                                     </a>
-                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li><a className="dropdown-item" href="/Ventas">Lista de Ventas</a></li>
-                                    </ul>
                                 </li>
                             </ul>
                         </div>
