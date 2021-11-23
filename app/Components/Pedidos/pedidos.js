@@ -321,11 +321,7 @@ class pedidos extends React.Component {
                                                             <td>{item.nombre}</td>
                                                             <td>{item.cantidad}</td>
                                                             <td>{item.fechaEntrega}</td>
-                                                            <td>
-                                                                <button value={item.idpedido}
-                                                                        className="btn btn-outline-success"
-                                                                        onClick={this.cambiarEstado.bind(this)}>{item.estado}</button>
-                                                                </td>
+                                                            <td>{item.estado}</td>
                                                             <td>{item.metodoPago}</td>
                                                             <td>
                                                                 <button className="btn btn-light"

@@ -10,7 +10,7 @@ class Home extends React.Component {
         }
         this.listPedidos = [];
 
-        APIInvoker.invokeGET('/pedidos/getAllPedidosNombres', data => {
+        APIInvoker.invokeGET('/pedidos/getAllPedidosPendientes', data => {
             this.setState({
                 listPedidos : data.data,
             })
@@ -23,6 +23,31 @@ class Home extends React.Component {
             this.props.history.push('/Login')
         }
     }
+    cambiarEstado(e){
+        let idpedido = e.target.value
+        console.log(idpedido)
+        if(idpedido != undefined){
+
+            APIInvoker.invokeGET( `/pedidos/updatePedido/${idpedido}`, data => {
+                alert("Estado del Pedido Actualizado");
+                this.actualizarTabla();
+            }, error => {
+                alert(error.message + error.error)
+            })
+        }
+        else {
+            this.messageError.innerHTML = 'Los campos marcados con * son obligatorios'
+        }
+    }
+    actualizarTabla(e){
+        APIInvoker.invokeGET('/pedidos/getAllPedidosPendientes',data => {
+            this.setState({
+                listPedidos : data.data
+            })
+        }, error => {
+            alert(error.message)
+        })
+    }
 
     render() {
         return(
@@ -32,7 +57,7 @@ class Home extends React.Component {
                         <div className="row justify-content-around">
                             <div className="card overflow-hidden container">
                                 <div className="card-body pt-5">
-                                    <h1>Bienvenido al sistema de Control de ventas de tamales.</h1>
+                                    <h1>Bienvenido al sistema de Control de tamales.</h1>
                                     <div className="p-2">
                                         <br/>
                                         <div>
@@ -53,7 +78,11 @@ class Home extends React.Component {
                                                         <td>{item.nombre}</td>
                                                         <td>{item.cantidad}</td>
                                                         <td>{item.fechaEntrega}</td>
-                                                        <td>{item.estado}</td>
+                                                        <td> {item.estado}
+                                                            <button value={item.idpedido}
+                                                                    className="btn btn-outline-success"
+                                                                    onClick={this.cambiarEstado.bind(this)}>Entregar</button>
+                                                        </td>
                                                     </tr>
                                                 </For>
                                                 </tbody>
