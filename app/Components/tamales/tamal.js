@@ -24,6 +24,11 @@ class tamal extends React.Component {
             alert(error.message)
         })
     }
+    componentDidMount() {
+        if(!window.localStorage.getItem('token')){
+            this.props.history.push('/Login')
+        }
+    }
 
     changeField(e) {
         let field = e.target.name
@@ -105,11 +110,26 @@ class tamal extends React.Component {
             this.status = true
         }
     }
+    eliminarTamal(e){
+        let idTamal = e.target.value
+        if(idTamal != undefined){
+            console.log(idTamal)
+            APIInvoker.invokeDELETE(`/tamales/deletetamal/${idTamal}`,
+                data => {
+                    alert(data.message)
+                },
+                error => {
+                    alert(error.message + error.error)
+                })
+        }else{
+            alert("Error al eliminar intente de nuevo")
+        }
+    }
 
     render() {
         return(
             <div>
-                <div className="center">
+                <div className="center bg-login">
                     <div className="container">
                         <div className="card overflow-hidden my-5 ">
                             <div className="row justify-content-around">
@@ -172,7 +192,7 @@ class tamal extends React.Component {
                                                                    className="form-text text-danger"></label>
                                                             <div className="form-floating">
                                                                 <input className="form-control"
-                                                                       type="text"
+                                                                       type="number"
                                                                        name="existencias"
                                                                        id="existencias"
                                                                        placeholder="50"
@@ -195,7 +215,7 @@ class tamal extends React.Component {
                                                 </div>
                                             </div>
                                             <div>
-                                                <table className="table">
+                                                <table className="table ">
                                                     <thead>
                                                     <tr>
                                                         <th scope="col">Nombre</th>
@@ -213,7 +233,9 @@ class tamal extends React.Component {
                                                             <td>{item.precio}</td>
                                                             <td> {item.existencias}</td>
                                                             <td >
-                                                                <button className="btn btn-light">
+                                                                <button className="btn btn-light"
+                                                                        value={item.idTamal}
+                                                                        onClick={this.eliminarTamal.bind(this)}>
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                          width="16"
                                                                          height="16"

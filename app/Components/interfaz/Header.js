@@ -28,7 +28,7 @@ class Header extends React.Component {
                             <ul className="navbar-nav">
                                 <li className="nav-item dropdown">
                                     <a className="nav-link active" role="button"
-                                       data-bs-toggle="dropdown" href="/tamales">Pedidos
+                                       data-bs-toggle="dropdown" href="/pedidos">Pedidos
                                     </a>
                                 </li>
                             </ul>

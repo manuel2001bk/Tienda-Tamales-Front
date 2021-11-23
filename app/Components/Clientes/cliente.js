@@ -24,6 +24,11 @@ class cliente extends React.Component {
             alert(error.message)
         })
     }
+    componentDidMount() {
+        if(!window.localStorage.getItem('token')){
+            this.props.history.push('/Login')
+        }
+    }
 
     changeField(e) {
         let field = e.target.name
@@ -106,11 +111,26 @@ class cliente extends React.Component {
             this.status = true
         }
     }
+    eliminarCliente(e){
+        let idCliente = e.target.value
+        if(idCliente != undefined){
+            console.log(idCliente)
+            APIInvoker.invokeDELETE(`/cliente/deleteCliente/${idCliente}`,
+                data => {
+                    alert(data.message)
+                },
+                error => {
+                    alert(error.message + error.error)
+                })
+        }else{
+            alert("Error al eliminar intente de nuevo")
+        }
+    }
 
     render() {
         return(
             <div>
-                <div className="center">
+                <div className="center bg-login">
                     <div className="container">
                         <div className="card overflow-hidden my-5 ">
                             <div className="row justify-content-around">
@@ -213,7 +233,9 @@ class cliente extends React.Component {
                                                                 <td>{item.direccion}</td>
                                                                 <td> {item.numeroTelefono}</td>
                                                                 <td>
-                                                                    <button className="btn btn-light">
+                                                                    <button className="btn btn-light"
+                                                                            value={item.idCliente}
+                                                                            onClick={this.eliminarCliente.bind(this)}>
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                              width="16"
                                                                              height="16"

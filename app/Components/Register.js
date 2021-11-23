@@ -106,6 +106,14 @@ class Register extends React.Component{
         }
 
     }
+    componentDidMount() {
+        if(window.localStorage.getItem('token')){
+            alert("Para continuar cierre la sesión actual")
+            this.props.history.push('/home')
+        }else {
+
+        }
+    }
 
     render() {
         return(

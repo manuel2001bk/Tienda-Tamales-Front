@@ -11,6 +11,12 @@ class Login extends React.Component {
             password:''
         }
     }
+    componentDidMount() {
+        if(window.localStorage.getItem('token')){
+            alert("Sesión ya iniciada")
+            this.props.history.push('/home')
+        }
+    }
     changeField(e) {
         let field = e.target.name
         let value = e.target.value

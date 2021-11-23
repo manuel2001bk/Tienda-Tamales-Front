@@ -14,9 +14,21 @@ class pedidos extends React.Component {
             estado: '',
             metodoPago: '',
             listPedidos : [],
+            listClientes : [],
+            listTamales : [],
             oculto : true,
         }
         this.listPedidos = []
+        this.listClientes = []
+        this.listTamales = []
+        APIInvoker.invokeGET('/cliente/getAllClientes', data => {
+            this.setState({
+                listClientes : data.data,
+            })
+        }, error => {
+            alert(error.message)
+        })
+
         APIInvoker.invokeGET('/pedidos/getAllPedidosNombres', data => {
             this.setState({
                 listPedidos : data.data,
@@ -24,6 +36,19 @@ class pedidos extends React.Component {
         }, error => {
             alert(error.message)
         })
+        APIInvoker.invokeGET('/tamales/getAllTamales', data => {
+            this.setState({
+                listTamales : data.data,
+            })
+        }, error => {
+            alert(error.message)
+        })
+
+    }
+    componentDidMount() {
+        if(!window.localStorage.getItem('token')){
+            this.props.history.push('/Login')
+        }
     }
     changeField(e) {
         let field = e.target.name
@@ -51,12 +76,110 @@ class pedidos extends React.Component {
         }
     }
     registrarPedido(e){
+        this.messageError.innerHTML = ''
+        this.validarCampos()
+
+        if (this.status) {
+            var pedido = {
+                idCliente :  this.state.idCliente,
+                idTamal :  this.state.idTamal,
+                cantidad :  this.state.cantidad,
+                fechaEntrega : this.state.fechaEntrega,
+                estado :  'Pendiente',
+                metodoPago :  this.state.metodoPago
+            }
+
+            APIInvoker.invokePOST('/pedidos/addPedido', pedido, data => {
+                alert(data.message)
+                this.status = false
+                this.addPedido.style.display = 'none'
+                this.state.oculto = true
+                this.actualizarTabla();
+            }, error => {
+                alert(error.message + error.error)
+            })
+        }
+        else {
+            this.messageError.innerHTML = 'Los campos marcados con * son obligatorios'
+        }
+    }
+    validarCampos(){
+        let estado = true;
+
+        if (this.state.idCliente.length === 0) {
+            this.idCliente.innerHTML = '* Campo obligatorio'
+            estado = false;
+        } else{
+            this.idCliente.innerHTML = ''
+        }
+        if (this.state.idTamal.length === 0) {
+            this.idTamal.innerHTML = '* Campo obligatorio'
+            estado = false;
+        } else{
+            this.idTamal.innerHTML = ''
+        }
+        if (this.state.cantidad.length === 0) {
+            this.cantidad.innerHTML = '* Campo obligatorio'
+            estado = false;
+        } else{
+            this.cantidad.innerHTML = ''
+        }
+        if (this.state.fechaEntrega.length === 0) {
+            this.fechaEntrega.innerHTML = '* Campo obligatorio'
+            estado = false;
+        } else{
+            this.fechaEntrega.innerHTML = ''
+        }
+        if (this.state.metodoPago.length === 0) {
+            this.metodoPago.innerHTML = '* Campo obligatorio'
+            estado = false;
+        } else{
+            this.metodoPago.innerHTML = ''
+        }
+        if (estado === false){
+            this.status = false
+        } else{
+            this.status = true
+        }
+    }
+    cambiarEstado(e){
+        let idpedido = e.target.value
+        console.log(idpedido)
+        if(idpedido != undefined){
+            var pedido = {
+                idpedido :  idpedido,
+                estado :  'Entregado',
+            }
+            APIInvoker.invokePOST('/pedidos/updatePedido', pedido, data => {
+                alert(data.message)
+                this.actualizarTabla();
+            }, error => {
+                alert(error.message + error.error)
+            })
+            }
+            else {
+                this.messageError.innerHTML = 'Los campos marcados con * son obligatorios'
+            }
+    }
+    eliminarPedido(e){
+        let idpedido = e.target.value
+        if(idpedido != undefined){
+            console.log(idpedido)
+            APIInvoker.invokeDELETE(`/pedidos/deletePedido/${idpedido}`,
+                data => {
+                    alert(data.message)
+                },
+                error => {
+                    alert(error.message + error.error)
+                })
+        }
+
 
     }
     render() {
         return(
             <div>
-                <div className="center">
+                <div className="center bg-login">
                     <div className="container">
                         <div className="card overflow-hidden my-5 ">
                             <div className="row justify-content-around">
@@ -94,32 +217,40 @@ class pedidos extends React.Component {
                                                         <h4>Añadir Tamales</h4>
                                                         <form className="form-horizontal">
                                                             <div className="form-floating">
-                                                                <input className="form-control"
-                                                                       type="text"
-                                                                       name="idCliente"
-                                                                       id="idCliente"
-                                                                       placeholder="Manuel"
-                                                                       value={this.state.idCliente}
-                                                                       onChange={this.changeField.bind(this)}/>
-                                                                <label htmlFor="idCliente">Nombre</label>
+                                                                <select className="form-select"
+                                                                        id="idCliente"
+                                                                        name="idCliente"
+                                                                        value={this.state.idCliente}
+                                                                        aria-label="Floating label select example"
+                                                                        onChange={this.changeField.bind(this)}>
+                                                                    <option >Elige el Cliente</option>
+                                                                    <For each="item" index="idx" of={ this.state.listClientes}>
+                                                                        <option key={idx} value={item.idCliente}>{item.nombre}</option>
+                                                                    </For>
+                                                                </select>
+                                                                <label htmlFor="floatingSelectGrid">Cliente</label>
                                                             </div>
                                                             <label ref={self=> this.idCliente = self}
                                                                    className="form-text text-danger"></label>
                                                             <div className="form-floating">
-                                                                <input className="form-control"
-                                                                       type="number"
-                                                                       name="idTamal"
-                                                                       id="idTamal"
-                                                                       placeholder="idTamal"
-                                                                       value={this.state.idTamal}
-                                                                       onChange={this.changeField.bind(this)}/>
-                                                                <label htmlFor="idTamal">Id Tamal</label>
+                                                                <select className="form-select"
+                                                                        id="idTamal"
+                                                                        name="idTamal"
+                                                                        value={this.state.idTamal}
+                                                                        aria-label="Floating label select example"
+                                                                        onChange={this.changeField.bind(this)}>
+                                                                    <option >Elige el Tamal</option>
+                                                                    <For each="item" index="idx" of={ this.state.listTamales}>
+                                                                        <option key={idx} value={item.idTamal}>{item.nombre}</option>
+                                                                    </For>
+                                                                </select>
+                                                                <label htmlFor="floatingSelectGrid">Cliente</label>
                                                             </div>
                                                             <label ref={self=> this.idTamal = self}
                                                                    className="form-text text-danger"></label>
                                                             <div className="form-floating">
                                                                 <input className="form-control"
-                                                                       type="text"
+                                                                       type="number"
                                                                        name="cantidad"
                                                                        id="cantidad"
                                                                        placeholder="50"
@@ -140,7 +271,22 @@ class pedidos extends React.Component {
                                                                        onChange={this.changeField.bind(this)}/>
                                                                 <label htmlFor="fechaEntrega">Fecha de Entrega</label>
                                                             </div>
-                                                            <label ref={self=> this.fechaNacimiento = self} className="form-text text-danger"></label>
+                                                            <label ref={self=> this.fechaEntrega = self} className="form-text text-danger"></label>
+                                                            <br/>
+                                                            <div className="form-floating">
+                                                                <select className="form-select"
+                                                                        id="metodoPago"
+                                                                        name="metodoPago"
+                                                                        value={this.state.metodoPago}
+                                                                        aria-label="Floating label select example"
+                                                                        onChange={this.changeField.bind(this)}>
+                                                                    <option value="Efectivo">Efectivo</option>
+                                                                    <option value="Tarjeta">Tarjeta</option>
+                                                                </select>
+                                                                <label htmlFor="floatingSelectGrid">Metodo de Pago</label>
+                                                            </div>
+                                                            <label ref={self=> this.metodoPago = self} className="form-text text-danger"></label>
+                                                            <br/>
                                                             <div className="d-grid gap-2">
                                                                 <button className="btn btn-outline-success"
                                                                         type="button"
@@ -175,10 +321,16 @@ class pedidos extends React.Component {
                                                             <td>{item.nombre}</td>
                                                             <td>{item.cantidad}</td>
                                                             <td>{item.fechaEntrega}</td>
-                                                            <td>{item.estado}</td>
+                                                            <td>
+                                                                <button value={item.idpedido}
+                                                                        className="btn btn-outline-success"
+                                                                        onClick={this.cambiarEstado.bind(this)}>{item.estado}</button>
+                                                                </td>
                                                             <td>{item.metodoPago}</td>
                                                             <td>
-                                                                <button className="btn btn-light">
+                                                                <button className="btn btn-light"
+                                                                        value={item.idpedido}
+                                                                        onClick={this.eliminarPedido.bind(this)}>
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
                                                                          width="16"
                                                                          height="16"
