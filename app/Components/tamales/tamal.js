@@ -131,9 +131,9 @@ class tamal extends React.Component {
             <div>
                 <div className="center bg-login">
                     <div className="container">
-                        <div className="card overflow-hidden my-5 ">
+                        <div className="card overflow-hidden my-2 ">
                             <div className="row justify-content-around">
-                                <div className="card overflow-hidden container">
+                                <div className="card ">
                                     <div className="card-body pt-5">
                                         <div className="p-2">
                                             <div className="row justify-content-end">

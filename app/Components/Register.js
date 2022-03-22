@@ -145,8 +145,8 @@ class Register extends React.Component{
                                                                onChange={this.changeField.bind(this)}/>
                                                         <label htmlFor="Nombre">Nombre</label>
                                                     </div>
-                                                    <label ref={self=> this.nombre = self} className="form-text text-danger"></label>
-                                                    <br/>
+                                                    <label ref={self=> this.nombre = self}
+                                                           className="form-text text-danger"></label>
                                                     <div className="form-floating">
                                                         <input className="form-control"
                                                                type="text"
@@ -157,7 +157,8 @@ class Register extends React.Component{
                                                                onChange={this.changeField.bind(this)}/>
                                                         <label htmlFor="apellidoPaterno">Apellido Paterno</label>
                                                     </div>
-                                                    <label ref={self=> this.apellidoPaterno = self} className="form-text text-danger"></label>
+                                                    <label ref={self=> this.apellidoPaterno = self}
+                                                           className="form-text text-danger"></label>
                                                     <br/>
                                                     <div className="form-floating">
                                                         <input className="form-control"
@@ -170,7 +171,8 @@ class Register extends React.Component{
                                                                onBlur={this.usernameValidate.bind(this)}/>
                                                         <label htmlFor="username">Nombre de usuario</label>
                                                     </div>
-                                                    <label ref={self=> this.username = self} className="form-text text-danger"></label>
+                                                    <label ref={self=> this.username = self}
+                                                           className="form-text text-danger"></label>
                                                     <br/>
                                                     <div className="form-floating">
                                                         <input className="form-control"
@@ -182,7 +184,8 @@ class Register extends React.Component{
                                                                onChange={this.changeField.bind(this)}/>
                                                         <label htmlFor="password">Contraseña</label>
                                                     </div>
-                                                    <label ref={self=> this.password = self} className="form-text text-danger"></label>
+                                                    <label ref={self=> this.password = self}
+                                                           className="form-text text-danger"></label>
                                                     <br/>
                                                     <div className="form-floating">
                                                         <input className="form-control"

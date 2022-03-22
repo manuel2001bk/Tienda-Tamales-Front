@@ -5,8 +5,6 @@ class Footer extends React.Component {
         return(
             <div>
                 <p className="row justify-content-center">© 2021 Tukisoft</p>
-
-
             </div>
         )
     }
