@@ -5,7 +5,23 @@ class Header extends React.Component {
     render() {
         return(
             <div>
-                <nav className="navbar navbar-expand-lg navbar navbar-dark bg-dark">
+                <nav  class= "amber lighten-2">
+                    <div class="navbar-fixed">
+                    <div class="nav-wrapper">
+                    <a href={Logo} class="brand-logo right"></a>
+                    <ul id="nav-mobile" class="left hide-on-med-and-down">
+                        
+                        <li><a href="/Home">Inicio</a></li>
+                        <li><a href="/cliente">Clientes</a></li>
+                        <li><a href="/tamales">Tamales</a></li>
+                        <li><a href="/pedidos">Pedidos</a></li>
+                        <li><a onClick={this.salir.bind(this)} href="/Login">Salir</a></li>
+                    </ul>
+                    </div>
+                    </div>
+                </nav>
+
+                {/* <nav className="navbar navbar-expand-lg navbar navbar-dark bg-dark">
                     <div className="container-fluid">
                         <a className="navbar-brand" href="/Home">
                             <img src={Logo} alt="" width="40" height="40"/>
@@ -38,7 +54,7 @@ class Header extends React.Component {
                                aria-current="page" href="/Login" onClick={this.salir.bind(this)}>Salir</a>
                         </div>
                     </div>
-                </nav>
+                </nav> */}
             </div>
 
             /*
