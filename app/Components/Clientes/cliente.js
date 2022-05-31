@@ -16,8 +16,8 @@ class cliente extends React.Component {
             status: false,
             show: false
         }
-        this.showModal = this.showModal.bind(this);
-        this.hideModal = this.hideModal.bind(this);
+        this.showModalAdd = this.showModalAdd.bind(this);
+        this.hideModalAdd = this.hideModalAdd.bind(this);
         this.listClientes = []
 
         APIInvoker.invokeGET('/cliente/getAllClientes', data => {
@@ -30,7 +30,7 @@ class cliente extends React.Component {
     }
     componentDidMount() {
         if(!window.localStorage.getItem('token')){
-            this.props.history.push('/Login')
+            //this.props.history.push('/Login')
         }
     }
 
@@ -130,20 +130,17 @@ class cliente extends React.Component {
             alert("Error al eliminar intente de nuevo")
         }
     }
-    showModal = () => {
+    showModalAdd = () => {
         this.setState({ show: true });
     };
-    hideModal = () => {
+    hideModalAdd = () => {
         this.setState({ show: false });
     };
 
     render() {
         return(
             <div>
-                <div>
-
-                </div>
-                <Modal show={this.state.show} handleClose={this.hideModal}>
+                <Modal show={this.state.show} handleClose={this.hideModalAdd}>
                     <div id="addCliente"
                          ref={self => this.addCliente = self}>
                         <div className="card container">
@@ -195,11 +192,10 @@ class cliente extends React.Component {
                                         </button>
                                         <button className="btn btn-outline-danger"
                                                 type="button"
-                                                onClick={this.hideModal}>Cancelar
+                                                onClick={this.hideModalAdd}>Cancelar
                                         </button>
                                     </div>
                                     <div ref={self => this.messageError = self}></div>
-
                                 </form>
                             </div>
                         </div>
@@ -214,9 +210,9 @@ class cliente extends React.Component {
                                     <div className="card-body pt-5">
                                         <div className="p-2">
                                             <div className="row justify-content-end">
-                                                <div className="col-11">
+                                                <div className="col-6">
                                                     <button className="btn btn-outline-primary"
-                                                            onClick={this.showModal}> agregar</button>
+                                                            onClick={this.showModalAdd}> agregar</button>
                                                 </div>
                                                 <div className="col align-self-end">
                                                     <button type="button"
