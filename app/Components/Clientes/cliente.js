@@ -156,7 +156,7 @@ class cliente extends React.Component {
                                                     </button>
                                                 </div>
                                                 <Modal show={this.state.show} handleClose={this.hideModal}>
-                                                    <div id="addCliente"
+                                                    <div id="editCliente"
                                                          ref={self => this.addCliente = self}>
                                                         <div className="card overflow-hidden container">
                                                             <div className="card-body pt-5">
