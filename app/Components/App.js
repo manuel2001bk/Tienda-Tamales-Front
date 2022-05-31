@@ -6,7 +6,7 @@ import {BrowserRouter,Switch,Route} from "react-router-dom";
 import pedidos from "./Pedidos/pedidos";
 
 //Clientes
-import cliente from "./Clientes/cliente";
+import Cliente from "./Clientes/cliente";
 
 //Tamales
 import tamales from "./tamales/tamal";
@@ -17,6 +17,7 @@ import NotFound from "../Pages/NotFound";
 import Home from "./Home";
 import Login from "./Login";
 import Register from "./Register";
+
 
 class App extends React.Component{
     render() {
@@ -29,7 +30,7 @@ class App extends React.Component{
                         <Route exact path='/Login' component={Login}/>
                         <Route exact path='/Home' component={Home}/>
                             <Route exact path='/Register' component={Register}/>
-                        <Route exact path='/cliente' component={cliente}/>
+                        <Route exact path='/cliente' component={Cliente}/>
                         <Route exact path='/tamales' component={tamales}/>
                         <Route exact path='/pedidos' component={pedidos}/>
                         <Route component={NotFound}/>

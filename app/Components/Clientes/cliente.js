@@ -2,6 +2,7 @@ import React from 'react';
 import APIInvoker from "../../Utils/APIInvoker";
 import update from "immutability-helper";
 import css from "../../assets/css/cliente.css"
+import Modal from "../Modal";
 
 class cliente extends React.Component {
     constructor() {
@@ -12,8 +13,11 @@ class cliente extends React.Component {
             numeroTelefono:'',
             listClientes : [],
             oculto : true,
-            status: false
+            status: false,
+            show: false
         }
+        this.showModalAdd = this.showModalAdd.bind(this);
+        this.hideModalAdd = this.hideModalAdd.bind(this);
         this.listClientes = []
 
         APIInvoker.invokeGET('/cliente/getAllClientes', data => {
@@ -26,7 +30,7 @@ class cliente extends React.Component {
     }
     componentDidMount() {
         if(!window.localStorage.getItem('token')){
-            this.props.history.push('/Login')
+            //this.props.history.push('/Login')
         }
     }
 
@@ -113,7 +117,7 @@ class cliente extends React.Component {
     }
     eliminarCliente(e){
         let idCliente = e.target.value
-        if(idCliente != undefined){
+        if(idCliente !== undefined){
             console.log(idCliente)
             APIInvoker.invokeDELETE(`/cliente/deleteCliente/${idCliente}`,
                 data => {
@@ -126,10 +130,78 @@ class cliente extends React.Component {
             alert("Error al eliminar intente de nuevo")
         }
     }
+    showModalAdd = () => {
+        this.setState({ show: true });
+    };
+    hideModalAdd = () => {
+        this.setState({ show: false });
+    };
 
     render() {
         return(
             <div>
+                <Modal show={this.state.show} handleClose={this.hideModalAdd}>
+                    <div id="addCliente"
+                         ref={self => this.addCliente = self}>
+                        <div className="card container">
+                            <h3>Agregar cliente</h3>
+                            <div className="card-body">
+                                <form className="form-horizontal">
+                                    <div className="form-floating">
+                                        <input className="form-control"
+                                               type="text"
+                                               name="nombre"
+                                               id="nombre"
+                                               placeholder="Manuel"
+                                               value={this.state.nombre}
+                                               onChange={this.changeField.bind(this)}/>
+                                        <label htmlFor="nombre">Nombre</label>
+                                    </div>
+                                    <label ref={self=> this.nombre = self}
+                                           className="form-text text-danger"></label>
+                                    <div className="form-floating">
+                                        <input className="form-control"
+                                               type="text"
+                                               name="direccion"
+                                               id="direccion"
+                                               placeholder="Calle"
+                                               value={this.state.direccion}
+                                               onChange={this.changeField.bind(this)}/>
+                                        <label htmlFor="direccion">Dirección</label>
+                                    </div>
+                                    <label ref={self=> this.direccion = self}
+                                           className="form-text text-danger"></label>
+                                    <div className="form-floating">
+                                        <input className="form-control"
+                                               type="text"
+                                               name="numeroTelefono"
+                                               id="numeroTelefono"
+                                               placeholder="968-855-96-74"
+                                               value={this.state.numeroTelefono}
+                                               onChange={this.changeField.bind(this)}/>
+                                        <label htmlFor="numeroTelefono">Numero de Telefono</label>
+                                    </div>
+                                    <label ref={self=> this.numeroTelefono = self}
+                                           className="form-text text-danger"></label>
+                                    <br/>
+
+                                    <div className="d-grid gap-2">
+                                        <button className="btn btn-outline-success"
+                                                type="button"
+                                                onClick={this.crearCuenta.bind(this)}>Registrar
+                                        </button>
+                                        <button className="btn btn-outline-danger"
+                                                type="button"
+                                                onClick={this.hideModalAdd}>Cancelar
+                                        </button>
+                                    </div>
+                                    <div ref={self => this.messageError = self}></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
+
                 <div className="center bg-login">
                     <div className="container">
                         <div className="card overflow-hidden my-5 ">
@@ -138,10 +210,9 @@ class cliente extends React.Component {
                                     <div className="card-body pt-5">
                                         <div className="p-2">
                                             <div className="row justify-content-end">
-                                                <div className="col-10 ">
-                                                    <button type="button"
-                                                            className="btn btn-outline-primary btn-lg"
-                                                            onClick={this.mostrar.bind(this)}>Agregar</button>
+                                                <div className="col-6">
+                                                    <button className="btn btn-outline-primary"
+                                                            onClick={this.showModalAdd}> agregar</button>
                                                 </div>
                                                 <div className="col align-self-end">
                                                     <button type="button"
@@ -165,52 +236,7 @@ class cliente extends React.Component {
                                                 <div className="card overflow-hidden container">
                                                     <div className="card-body pt-5">
                                                         <h4>Agregar nuevo cliente</h4>
-                                                        <form className="form-horizontal">
-                                                            <div className="form-floating">
-                                                                <input className="form-control"
-                                                                       type="text"
-                                                                       name="nombre"
-                                                                       id="nombre"
-                                                                       placeholder="Manuel"
-                                                                       value={this.state.nombre}
-                                                                       onChange={this.changeField.bind(this)}/>
-                                                                <label htmlFor="nombre">Nombre</label>
-                                                            </div>
-                                                            <label ref={self=> this.nombre = self}
-                                                                   className="form-text text-danger"></label>
-                                                            <div className="form-floating">
-                                                                <input className="form-control"
-                                                                       type="text"
-                                                                       name="direccion"
-                                                                       id="direccion"
-                                                                       placeholder="Calle"
-                                                                       value={this.state.direccion}
-                                                                       onChange={this.changeField.bind(this)}/>
-                                                                <label htmlFor="direccion">Dirección</label>
-                                                            </div>
-                                                            <label ref={self=> this.direccion = self}
-                                                                   className="form-text text-danger"></label>
-                                                            <div className="form-floating">
-                                                                <input className="form-control"
-                                                                       type="text"
-                                                                       name="numeroTelefono"
-                                                                       id="numeroTelefono"
-                                                                       placeholder="968-855-96-74"
-                                                                       value={this.state.numeroTelefono}
-                                                                       onChange={this.changeField.bind(this)}/>
-                                                                <label htmlFor="numeroTelefono">Numero de Telefono</label>
-                                                            </div>
-                                                            <label ref={self=> this.numeroTelefono = self}
-                                                                   className="form-text text-danger"></label>
-                                                            <br/>
-                                                            <div className="d-grid gap-2">
-                                                                <button className="btn btn-outline-success"
-                                                                        type="button"
-                                                                        onClick={this.crearCuenta.bind(this)}>Registrar
-                                                                </button>
-                                                            </div>
-                                                            <div ref={self => this.messageError = self}></div>
-                                                        </form>
+
                                                     </div>
                                                 </div>
                                             </div>
