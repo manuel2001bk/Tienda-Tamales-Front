@@ -70,12 +70,12 @@ class Login extends React.Component {
                         <div className="card overflow-hidden my-5 pt-sm-6">
                             <div className="bg-login-overlay"/>
                             <div className="center">
-                                <div className="col ">
+                                <div className="col">
                                     <div className="card overflow-hidden container">
                                         <div className="bg-login text-center">
                                             <div className="position-relative">
                                                 <h4 className="amber-text text-lighten-4 mb-0">Bienvenido!</h4>
-                                                <p className="amber-text text-lighten-4 mb-0">Ingrese los datos requeridos.</p>
+                                                <p className="amber-text text-lighten-4 mb-0">Ingrese los datos requeridos</p>
 
                                             </div>
                                         </div>
@@ -86,8 +86,9 @@ class Login extends React.Component {
                                                     <div className="d-grid gap-3 mt-4">
                                                         <div>
                                                             <input
-                                                                id="icon_prefix"
                                                                 type="text"
+                                                                name="username"
+                                                                id="username"
                                                                 className="validate"
                                                                 value={this.state.username}
                                                                 onChange={this.changeField.bind(this)}
@@ -101,8 +102,9 @@ class Login extends React.Component {
                                                         </div>
                                                         <div>
                                                             <input
-                                                                id="icon_password"
                                                                 type="password"
+                                                                name="password"
+                                                                id="password"
                                                                 className="validate"
                                                                 value={this.state.password}
                                                                 onChange={this.changeField.bind(this)}
