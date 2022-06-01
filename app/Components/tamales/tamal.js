@@ -2,6 +2,7 @@ import React from 'react';
 import APIInvoker from "../../Utils/APIInvoker";
 import update from "immutability-helper";
 import css from "../../assets/css/tamal.css"
+import Modal from "../Modal";
 
 class tamal extends React.Component {
     constructor() {
@@ -12,8 +13,11 @@ class tamal extends React.Component {
             existencias : 0,
             listTamales : [],
             oculto : true,
-            status: false
+            status: false,
+            show : false
         }
+        this.showModal = this.showModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
         this.listTamales = []
 
         APIInvoker.invokeGET('/tamales/getAllTamales', data => {
@@ -46,16 +50,6 @@ class tamal extends React.Component {
         }, error => {
             alert(error.message)
         })
-    }
-
-    mostrar(e){
-        if(this.state.oculto === true){
-            this.addCliente.style.display = 'block'
-            this.state.oculto = false
-        }else{
-            this.addCliente.style.display = 'none'
-            this.state.oculto = true
-        }
     }
 
     registrarTamal(e){
@@ -126,9 +120,78 @@ class tamal extends React.Component {
         }
     }
 
+    showModal = () => {
+        this.setState({ show: true });
+    };
+
+    hideModal = () => {
+        this.setState({ show: false });
+    };
+
     render() {
         return(
             <div>
+                <Modal show={this.state.show} handleClose={this.hideModal}>
+                    <div id="addCliente"
+                         ref={self => this.addCliente = self}>
+                        <div className="card container">
+                            <h3>Agregar cliente</h3>
+                                <div className="card-body pt-5">
+                                    <h4>Añadir Tamales</h4>
+                                    <form className="form-horizontal">
+                                        <div className="form-floating">
+                                            <input className="form-control"
+                                                   type="text"
+                                                   name="nombre"
+                                                   id="nombre"
+                                                   placeholder="Manuel"
+                                                   value={this.state.nombre}
+                                                   onChange={this.changeField.bind(this)}/>
+                                            <label htmlFor="nombre">Nombre</label>
+                                        </div>
+                                        <label ref={self=> this.nombre = self}
+                                               className="form-text text-danger"></label>
+                                        <div className="form-floating">
+                                            <input className="form-control"
+                                                   type="number"
+                                                   name="precio"
+                                                   id="precio"
+                                                   placeholder="precio"
+                                                   value={this.state.precio}
+                                                   onChange={this.changeField.bind(this)}/>
+                                            <label htmlFor="precio">Precio</label>
+                                        </div>
+                                        <label ref={self=> this.precio = self}
+                                               className="form-text text-danger"></label>
+                                        <div className="form-floating">
+                                            <input className="form-control"
+                                                   type="number"
+                                                   name="existencias"
+                                                   id="existencias"
+                                                   placeholder="50"
+                                                   value={this.state.existencias}
+                                                   onChange={this.changeField.bind(this)}/>
+                                            <label htmlFor="existencias">Existencias</label>
+                                        </div>
+                                        <label ref={self=> this.existencias = self}
+                                               className="form-text text-danger"></label>
+                                        <br/>
+                                        <div className="d-grid gap-2">
+                                            <button className="btn btn-outline-success"
+                                                    type="button"
+                                                    onClick={this.registrarTamal.bind(this)}>Registrar
+                                            </button>
+                                            <button className="btn btn-outline-danger"
+                                                    type="button"
+                                                    onClick={this.hideModal}>Cancelar
+                                            </button>
+                                        </div>
+                                        <div ref={self => this.messageError = self}></div>
+                                    </form>
+                                </div>
+                        </div>
+                    </div>
+                </Modal>
                 <div className="center bg-login">
                     <div className="container">
                         <div className="card overflow-hidden my-2 ">
@@ -137,10 +200,9 @@ class tamal extends React.Component {
                                     <div className="card-body pt-5">
                                         <div className="p-2">
                                             <div className="row justify-content-end">
-                                                <div className="col-10">
-                                                    <button type="button"
-                                                            className="btn btn-outline-primary btn-lg"
-                                                            onClick={this.mostrar.bind(this)}>Agregar</button>
+                                                <div className="col-6">
+                                                    <button className="btn btn-outline-primary"
+                                                            onClick={this.showModal}> agregar</button>
                                                 </div>
                                                 <div className="col align-self-end">
                                                     <button type="button"
@@ -157,61 +219,6 @@ class tamal extends React.Component {
                                                             <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
                                                         </svg>
                                                         </button>
-                                                </div>
-                                            </div>
-                                            <div id="addCliente"
-                                                 className="ocultar"
-                                                 ref={self => this.addCliente = self}>
-                                                <div className="card overflow-hidden container">
-                                                    <div className="card-body pt-5">
-                                                        <h4>Añadir Tamales</h4>
-                                                        <form className="form-horizontal">
-                                                            <div className="form-floating">
-                                                                <input className="form-control"
-                                                                       type="text"
-                                                                       name="nombre"
-                                                                       id="nombre"
-                                                                       placeholder="Manuel"
-                                                                       value={this.state.nombre}
-                                                                       onChange={this.changeField.bind(this)}/>
-                                                                <label htmlFor="nombre">Nombre</label>
-                                                            </div>
-                                                            <label ref={self=> this.nombre = self}
-                                                                   className="form-text text-danger"></label>
-                                                            <div className="form-floating">
-                                                                <input className="form-control"
-                                                                       type="number"
-                                                                       name="precio"
-                                                                       id="precio"
-                                                                       placeholder="precio"
-                                                                       value={this.state.precio}
-                                                                       onChange={this.changeField.bind(this)}/>
-                                                                <label htmlFor="precio">Precio</label>
-                                                            </div>
-                                                            <label ref={self=> this.precio = self}
-                                                                   className="form-text text-danger"></label>
-                                                            <div className="form-floating">
-                                                                <input className="form-control"
-                                                                       type="number"
-                                                                       name="existencias"
-                                                                       id="existencias"
-                                                                       placeholder="50"
-                                                                       value={this.state.existencias}
-                                                                       onChange={this.changeField.bind(this)}/>
-                                                                <label htmlFor="existencias">Existencias</label>
-                                                            </div>
-                                                            <label ref={self=> this.existencias = self}
-                                                                   className="form-text text-danger"></label>
-                                                            <br/>
-                                                            <div className="d-grid gap-2">
-                                                                <button className="btn btn-outline-success"
-                                                                        type="button"
-                                                                        onClick={this.registrarTamal.bind(this)}>Registrar
-                                                                </button>
-                                                            </div>
-                                                            <div ref={self => this.messageError = self}></div>
-                                                        </form>
-                                                    </div>
                                                 </div>
                                             </div>
                                             <div>
