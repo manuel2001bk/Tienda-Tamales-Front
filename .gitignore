@@ -1,6 +1,5 @@
 # Project exclude paths
 node_modules
-dist
 
 # local env files
 .env.local
