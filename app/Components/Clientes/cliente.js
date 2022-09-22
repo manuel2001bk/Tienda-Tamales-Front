@@ -33,7 +33,7 @@ class cliente extends React.Component {
     }
     componentDidMount() {
         if(!window.localStorage.getItem('token')){
-            //this.props.history.push('/Login')
+            this.props.history.push('/Login')
         }
     }
 
