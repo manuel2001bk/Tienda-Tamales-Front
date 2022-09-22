@@ -1,7 +1,8 @@
 import React from 'react';
 import APIInvoker from "../../Utils/APIInvoker";
 import update from "immutability-helper";
-import css from "../../assets/css/cliente.css"
+import css from "../../assets/css/cliente.css";
+import Modal from "../Modal";
 
 class cliente extends React.Component {
     constructor() {
@@ -12,8 +13,14 @@ class cliente extends React.Component {
             numeroTelefono:'',
             listClientes : [],
             oculto : true,
-            status: false
+            status: false,
+            showAdd : false,
+            show : false
         }
+        this.showModalAdd = this.showModalAdd.bind(this);
+        this.hideModalAdd = this.hideModalAdd.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
         this.listClientes = []
 
         APIInvoker.invokeGET('/cliente/getAllClientes', data => {
@@ -46,16 +53,6 @@ class cliente extends React.Component {
         }, error => {
             alert(error.message)
         })
-    }
-
-    mostrar(e){
-        if(this.state.oculto === true){
-            this.addCliente.style.display = 'block'
-            this.state.oculto = false
-        }else{
-            this.addCliente.style.display = 'none'
-            this.state.oculto = true
-        }
     }
 
     crearCuenta(e){
@@ -113,7 +110,7 @@ class cliente extends React.Component {
     }
     eliminarCliente(e){
         let idCliente = e.target.value
-        if(idCliente != undefined){
+        if(idCliente !== undefined){
             console.log(idCliente)
             APIInvoker.invokeDELETE(`/cliente/deleteCliente/${idCliente}`,
                 data => {
@@ -126,10 +123,147 @@ class cliente extends React.Component {
             alert("Error al eliminar intente de nuevo")
         }
     }
+    showModalAdd = () => {
+        this.setState({ showAdd: true });
+    };
+    hideModalAdd = () => {
+        this.setState({ showAdd: false });
+    };
+
+    showModal = () => {
+        this.setState({ show: true });
+    };
+
+    hideModal = () => {
+        this.setState({ show: false });
+    };
+
 
     render() {
         return(
             <div>
+                <Modal show={this.state.showAdd} handleClose={this.hideModalAdd}>
+                    <div id="addCliente"
+                         ref={self => this.addCliente = self}>
+                        <div className="card container">
+                            <h3>Agregar cliente</h3>
+                            <div className="card-body">
+                                <form className="form-horizontal">
+                                    <div className="form-floating">
+                                        <input className="form-control"
+                                               type="text"
+                                               name="nombre"
+                                               id="nombre"
+                                               placeholder="Manuel"
+                                               value={this.state.nombre}
+                                               onChange={this.changeField.bind(this)}/>
+                                        <label htmlFor="nombre">Nombre</label>
+                                    </div>
+                                    <label ref={self => this.nombre = self}
+    className="form-text text-danger"/>
+                                    <div className="form-floating">
+                                        <input className="form-control"
+                                               type="text"
+                                               name="direccion"
+                                               id="direccion"
+                                               placeholder="Calle"
+                                               value={this.state.direccion}
+                                               onChange={this.changeField.bind(this)}/>
+                                        <label htmlFor="direccion">Dirección</label>
+                                    </div>
+                                    <label ref={self => this.direccion = self}
+    className="form-text text-danger"/>
+                                    <div className="form-floating">
+                                        <input className="form-control"
+                                               type="text"
+                                               name="numeroTelefono"
+                                               id="numeroTelefono"
+                                               placeholder="968-855-96-74"
+                                               value={this.state.numeroTelefono}
+                                               onChange={this.changeField.bind(this)}/>
+                                        <label htmlFor="numeroTelefono">Numero de Telefono</label>
+                                    </div>
+                                    <label ref={self => this.numeroTelefono = self}
+    className="form-text text-danger"/>
+                                    <br/>
+
+                                    <div className="d-grid gap-2">
+                                        <button className="btn btn-outline-success"
+                                                type="button"
+                                                onClick={this.crearCuenta.bind(this)}>Registrar
+                                        </button>
+                                        <button className="btn btn-outline-danger"
+                                                type="button"
+                                                onClick={this.hideModalAdd}>Cancelar
+                                        </button>
+                                    </div>
+                                    <div ref={self => this.messageError = self}/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
+
+                <Modal show={this.state.show} handleClose={this.hideModal}>
+                    <div id="editCliente"
+                         ref={self => this.addCliente = self}>
+                        <div className="card overflow-hidden container">
+                            <div className="card-body pt-5">
+                                <h4>Editar cliente</h4>
+                                <form className="form-horizontal">
+                                    <div className="form-floating">
+                                        <input className="form-control"
+                                               type="text"
+                                               name="nombre"
+                                               id="nombre"
+                                               placeholder="Manuel"
+                                               value={this.state.nombre}
+                                               onChange={this.changeField.bind(this)}/>
+                                        <label htmlFor="nombre">Nombre</label>
+                                    </div>
+                                    <label ref={self => this.nombre = self}
+    className="form-text text-danger"/>
+                                    <div className="form-floating">
+                                        <input className="form-control"
+                                               type="text"
+                                               name="direccion"
+                                               id="direccion"
+                                               placeholder="Calle"
+                                               value={this.state.direccion}
+                                               onChange={this.changeField.bind(this)}/>
+                                        <label htmlFor="direccion">Dirección</label>
+                                    </div>
+                                    <label ref={self => this.direccion = self}
+    className="form-text text-danger"/>
+                                    <div className="form-floating">
+                                        <input className="form-control"
+                                               type="text"
+                                               name="numeroTelefono"
+                                               id="numeroTelefono"
+                                               placeholder="968-855-96-74"
+                                               value={this.state.numeroTelefono}
+                                               onChange={this.changeField.bind(this)}/>
+                                        <label htmlFor="numeroTelefono">Numero de Telefono</label>
+                                    </div>
+                                    <label ref={self => this.numeroTelefono = self}
+    className="form-text text-danger"/>
+                                    <br/>
+                                    <div className="d-grid gap-2">
+                                        <button className="btn btn-outline-success"
+                                                type="button"
+                                                onClick={this.crearCuenta.bind(this)}>Registrar
+                                        </button>
+                                        <button className="btn btn-outline-danger"
+                                                type="button"
+                                                onClick={this.hideModal}>Cancelar
+                                        </button>
+                                    </div>
+                                    <div ref={self => this.messageError = self}/>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
                 <div className="center bg-login">
                     <div className="container">
                         <div className="card overflow-hidden my-5 ">
@@ -138,10 +272,9 @@ class cliente extends React.Component {
                                     <div className="card-body pt-5">
                                         <div className="p-2">
                                             <div className="row justify-content-end">
-                                                <div className="col-10 ">
-                                                    <button type="button"
-                                                            className="btn btn-outline-primary btn-lg"
-                                                            onClick={this.mostrar.bind(this)}>Agregar</button>
+                                                <div className="col-6">
+                                                    <button className="btn btn-outline-primary"
+                                                            onClick={this.showModalAdd}> agregar</button>
                                                 </div>
                                                 <div className="col align-self-end">
                                                     <button type="button"
@@ -176,8 +309,8 @@ class cliente extends React.Component {
                                                                        onChange={this.changeField.bind(this)}/>
                                                                 <label htmlFor="nombre">Nombre</label>
                                                             </div>
-                                                            <label ref={self=> this.nombre = self}
-                                                                   className="form-text text-danger"></label>
+                                                            <label ref={self => this.nombre = self}
+    className="form-text text-danger"/>
                                                             <div className="form-floating">
                                                                 <input className="form-control"
                                                                        type="text"
@@ -188,8 +321,8 @@ class cliente extends React.Component {
                                                                        onChange={this.changeField.bind(this)}/>
                                                                 <label htmlFor="direccion">Dirección</label>
                                                             </div>
-                                                            <label ref={self=> this.direccion = self}
-                                                                   className="form-text text-danger"></label>
+                                                            <label ref={self => this.direccion = self}
+    className="form-text text-danger"/>
                                                             <div className="form-floating">
                                                                 <input className="form-control"
                                                                        type="text"
@@ -209,7 +342,7 @@ class cliente extends React.Component {
                                                                         onClick={this.crearCuenta.bind(this)}>Registrar
                                                                 </button>
                                                             </div>
-                                                            <div ref={self => this.messageError = self}></div>
+                                                            <div ref={self => this.messageError = self}/>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -221,7 +354,7 @@ class cliente extends React.Component {
                                                         <th scope="col">Nombre</th>
                                                         <th scope="col">Direccion</th>
                                                         <th scope="col">Numero de telefono</th>
-                                                        <th scope="col"></th>
+                                                        <th scope="col"/>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
@@ -246,6 +379,19 @@ class cliente extends React.Component {
                                                                                 d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                                                                             <path fill="evenodd"
                                                                                   d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                </td>
+                                                                <td>
+                                                                    <button className="btn btn-light"
+                                                                            value={item.idCliente}
+                                                                            onClick={this.showModal}>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                             width="16" height="16" fill="currentColor"
+                                                                             className="bi bi-pencil-fill"
+                                                                             viewBox="0 0 16 16">
+                                                                            <path
+                                                                                d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
                                                                         </svg>
                                                                     </button>
                                                                 </td>
